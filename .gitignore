@@ -1,6 +1,5 @@
 # RubyMine stuff
-
 .idea/
 
-# I develop on multiple platform
+# Ignore lock file for multiple platform support
 Gemfile.lock
