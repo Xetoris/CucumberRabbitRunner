@@ -1,0 +1,6 @@
+# RubyMine stuff
+
+.idea/
+
+# I develop on multiple platform
+Gemfile.lock
