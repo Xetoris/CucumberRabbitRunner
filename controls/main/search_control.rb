@@ -1,21 +1,26 @@
-require_relative '../shared/base_control'
+require 'capybara/dsl'
+require_relative '../extensions/control_chain_methods'
 
-module CucumberRabbitRunner
-  module Controls
-    module Main
-      # The search control on the main page
-      class SearchControl
-        include Controls::Shared::BaseControl
+module Controls
+  module Main
+    # The search control on the main page
+    class SearchControl
+      extend Capybara::DSL
+      extend Extensions::ControlChainMethods
 
-        def initialize
-          super('#header #searchbox')
+      CONTROL_SELECTOR = '#header #searchbox'.freeze
+
+      class << self
+        # @return [Boolean] Indicates if the control is visible.
+        def visible?
+          page.all(CONTROL_SELECTOR, wait: 10).any?
         end
 
         # Submits the control with the given text
         #
         # @param text [String]
         def search(text)
-          within(control) do
+          within(CONTROL_SELECTOR, wait: 5) do
             first('input.search_query').set(text)
             first('button.button-search').click
           end
