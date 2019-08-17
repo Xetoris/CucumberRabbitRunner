@@ -3,8 +3,7 @@ require_relative '../messages/file_line_command'
 
 module CucumberRabbitRunner
   # Contains method for listening to RabbitMQ.
-  module RabbitListener
-
+  class RabbitListener
     # Subscribes to the queue for the given message's class.
     #
     # for block { |message| ... }
@@ -34,7 +33,7 @@ module CucumberRabbitRunner
     # @return [Bunny::Queue]
     def queue(name)
       unless @queue
-        channel = connection.create_channel
+        channel = bunny_client.create_channel
         channel.prefetch(1)
         @queue = channel.queue("QE.#{name}.Queue")
        end
@@ -48,8 +47,7 @@ module CucumberRabbitRunner
         @client ||= Bunny.new( { host: ENV['RABBIT_HOST'],
                                  user: ENV['RABBIT_USER'],
                                  pass: ENV['RABBIT_PASS'],
-                                 port: 5672,
-                                 vhost: ENV['RABBIT_USER'] })
+                                 port: 8081 })
 
         @client.start
       end
