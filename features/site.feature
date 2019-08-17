@@ -1,5 +1,5 @@
-@test
-Feature: Test
+@site
+Feature: Site
   @main_page
   Scenario: Can load main page
     Given Frank is a user

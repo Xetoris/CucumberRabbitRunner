@@ -20,7 +20,7 @@ module Controls
         #
         # @param text [String]
         def search(text)
-          within(CONTROL_SELECTOR, wait: 5) do
+          page.within(CONTROL_SELECTOR, wait: 5) do
             first('input.search_query').set(text)
             first('button.button-search').click
           end

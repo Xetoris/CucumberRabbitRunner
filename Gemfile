@@ -9,5 +9,6 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem 'bunny'
 gem 'capybara'
 gem 'cucumber'
+gem 'ffi'
 gem 'rspec-expectations'
 gem 'selenium-webdriver'
