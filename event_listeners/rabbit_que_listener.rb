@@ -15,7 +15,17 @@ module CucumberRabbitRunner
       #
       # @param event [Cucumber::Events::TestCaseFinished] The data from the event.
       def after_test_case(event)
-        
+        location = event.test_case.location.to_s.split('cucumber-web/').last
+        message = CucumberRabbitRunner::Messages::FileLineCommand.new
+
+        regex = %r{(.*/)(.*).feature:(\d*)}i
+        matches = regex.match(location).captures
+
+        message.file_line_number = matches[2]
+        message.file_name = "#{matches[1]}.feature"
+        message.folder_path = matches[0]
+
+        CucumberRabbitRunner::Utility::RabbitClient.queue.publish(MultiJson.dump(message))
       end
     end
   end
