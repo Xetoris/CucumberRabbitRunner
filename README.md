@@ -19,7 +19,10 @@ From IRB:
 ```ruby
 require_relative 'bin/rabbit_listener'
 
-test = CucumberRabbitRunner::RabbitListener.new
+test = CucumberRabbitRunner::RabbitListener.handle_messages
+```
 
-test.subscribe { |x| print(x); }
+To queue messages:
+```
+cucumber --dry-run
 ```

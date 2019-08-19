@@ -34,9 +34,9 @@ module CucumberRabbitRunner
 
           model = new
 
-          model.file_line_number = hash[:file_line_number]
-          model.file_name = hash[:file_name]
-          model.folder_path = hash[:folder_path]
+          model.file_line_number = hash['file_line_number']
+          model.file_name = hash['file_name']
+          model.folder_path = hash['folder_path']
 
           model
         end

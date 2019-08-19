@@ -1,28 +1,45 @@
 require_relative '../messages/file_line_command'
+require_relative '../utility/rabbit_client'
 
 module CucumberRabbitRunner
   # Contains method for listening to RabbitMQ.
-  class RabbitListener
-    # Subscribes to the queue for the given message's class.
-    #
-    # for block { |message| ... }
-    # @yield [message] Invokes the block passing a populated instance of the message type received.
-    #    If the block finishes without error, the message will be acknowledged and removed from queue.
-    #
-    # @yieldparam [#from_json_string] message The populated instance of the message received.
-    def subscribe
-      queue = CucumberRabbitRunner::Utility::RabbitClient.queue
-      queue.subscribe(manual_ack: true) do |info, _meta, data|
-        begin
-          message = CucumberRabbitRunner::Messages::FileLineCommand.from_json(data)
+  module RabbitListener
+    class << self
+      def handle_messages
+        CucumberRabbitRunner::Utility::RabbitClient.subscribe  do |message|
+          begin
+            system('cucumber', get_file_part(message.folder_path,
+                                             message.file_name,
+                                             message.file_line_number))
 
-          yield message
-
-          queue.channel.acknowledge(info.delivery_tag)
-        rescue StandardError => e
-          puts("Something happened processing this message.\n Exception: #{e.message}")
+          rescue StandardError => e
+            puts('Something happened trying to run command.\n---')
+            puts(e.message)
+          end
         end
       end
+
+      # Builds the feature target path from its components
+      #
+      # @param path [String] Relative path to the directory that contains the file.
+      # @param file_name [String] Name of the feature file.
+      # @param number [Integer] Line number in the feature file.
+      def get_file_part(path, file_name, number)
+        part = ''
+
+        if /[a-zA-Z]:\// =~ path || /\.\//
+          part << path
+        else
+          part << "./#{path}"
+        end
+
+        unless path.end_with?('/')
+          part << '/'
+        end
+
+        "#{part}#{file_name}:#{number}"
+      end
+
     end
   end
 end

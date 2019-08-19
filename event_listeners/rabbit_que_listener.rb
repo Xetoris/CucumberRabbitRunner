@@ -1,3 +1,6 @@
+require_relative '../messages/file_line_command'
+require_relative '../utility/rabbit_client'
+
 module CucumberRabbitRunner
   module EventListeners
     # Our Cucumber event listener, which queues a message when invoked.
@@ -25,7 +28,7 @@ module CucumberRabbitRunner
         message.file_name = "#{matches[1]}.feature"
         message.folder_path = matches[0]
 
-        CucumberRabbitRunner::Utility::RabbitClient.queue.publish(MultiJson.dump(message))
+        CucumberRabbitRunner::Utility::RabbitClient.publish(message)
       end
     end
   end
