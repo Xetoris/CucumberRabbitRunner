@@ -4,7 +4,7 @@ require_relative '../utility/rabbit_client'
 module CucumberRabbitRunner
   module EventListeners
     # Our Cucumber event listener, which queues a message when invoked.
-    class RabbitQueueListener
+    class RabbitEventPublisher
       # Creates a new instance with the given connection information.
       #
       # @param config [Cucumber::Configuration] The configuration object from Cucumber.
@@ -18,7 +18,7 @@ module CucumberRabbitRunner
       #
       # @param event [Cucumber::Events::TestCaseFinished] The data from the event.
       def after_test_case(event)
-        location = event.test_case.location.to_s.split('cucumber-web/').last
+        location = event.test_case.location.to_s.split('CucumberRabbitRunner').last
         message = CucumberRabbitRunner::Messages::FileLineCommand.new
 
         regex = %r{(.*/)(.*).feature:(\d*)}i

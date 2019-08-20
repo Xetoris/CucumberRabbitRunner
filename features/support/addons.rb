@@ -1,1 +1,1 @@
-require_relative '../../event_listeners/rabbit_que_listener'
+require_relative '../../event_listeners/rabbit_event_publisher'

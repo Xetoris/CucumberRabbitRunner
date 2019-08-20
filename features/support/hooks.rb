@@ -1,3 +1,3 @@
 AfterConfiguration do |config|
-  CucumberRabbitRunner::EventListeners::RabbitQueueListener.new(config)
+  CucumberRabbitRunner::EventListeners::RabbitEventPublisher.new(config)
 end
