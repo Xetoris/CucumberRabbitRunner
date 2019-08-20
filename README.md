@@ -15,11 +15,9 @@ Set Environment Variables:
 | RABBIT_USER | guest |
 | RABBIT_PASS | guest |
 
-From IRB:
-```ruby
-require_relative 'bin/rabbit_listener'
-
-test = CucumberRabbitRunner::RabbitListener.handle_messages
+From CMD/Shell:
+```
+bundle exec ruby ./bin/rabbit_boot.rb
 ```
 
 To queue messages:
